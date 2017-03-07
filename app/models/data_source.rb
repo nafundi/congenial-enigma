@@ -1,4 +1,6 @@
 class DataSource < ApplicationRecord
+  include DataSource::Type
+
   before_validation :normalize_name
   validates :name, presence: true
 
