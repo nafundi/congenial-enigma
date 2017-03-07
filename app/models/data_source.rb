@@ -4,6 +4,8 @@ class DataSource < ApplicationRecord
   before_validation :normalize_name
   validates :name, presence: true
 
+  scope :order_by_name, -> { reorder(:name) }
+
   protected
 
   def normalize_name

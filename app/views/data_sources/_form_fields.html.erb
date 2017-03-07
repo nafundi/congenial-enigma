@@ -1,0 +1,31 @@
+<div class="form-group">
+  <%= label_tag :name, nil, class: 'col-md-1 control-label' %>
+  <div class="col-md-8">
+    <%= text_field_tag :name, @source.name, placeholder: 'Name', required: true,
+                       class: 'form-control' %>
+  </div>
+</div>
+<div class="form-group">
+  <%= label_tag :type, nil, class: 'col-md-1 control-label' %>
+  <% if @source.persisted? %>
+    <%= icon 'question-circle', class: 'control-label', data: {
+      toggle: :popover, trigger: :hover,
+      content: "A data source's type cannot be changed once it has been saved."
+    } %>
+  <% end %>
+  <div class="col-md-3">
+    <% options = options_from_collection_for_select(DataSource.type_classes,
+                                                    :name, :type_title,
+                                                    @source.type) %>
+    <%= select_tag :type, options, disabled: @source.persisted?, required: true,
+                   class: 'form-control' %>
+    <%= hidden_field_tag :type, @source.type if @source.persisted? %>
+  </div>
+</div>
+<div class="form-group">
+  <%= label_tag 'settings[url]', 'URL', class: 'col-md-1 control-label' %>
+  <div class="col-md-11">
+    <%= text_field_tag 'settings[url]', @source.settings['url'],
+        placeholder: 'URL', required: true, class: 'form-control' %>
+  </div>
+</div>

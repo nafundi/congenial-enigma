@@ -1,0 +1,26 @@
+<% if @source.errors.any? %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">Invalid Data Source</div>
+    <div class="panel-body">
+      <p>
+        There
+        <% if @source.errors.size == 1 %>
+          was a problem
+        <% else %>
+          were problems
+        <% end %>
+        saving the data source:
+      </p>
+      <ul>
+        <% @source.errors.each do |attribute, error| %>
+          <li>
+            <% unless attribute == :settings %>
+              <%= DataSource.human_attribute_name(attribute) %>
+            <% end %>
+            <%= error %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

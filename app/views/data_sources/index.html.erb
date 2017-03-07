@@ -1,0 +1,30 @@
+<div class="collection-actions">
+  <%= link_to icon('plus', 'Add Data Source'), new_data_source_path,
+              role: :button, class: 'btn btn-success' %>
+</div>
+
+<% if @sources.none? %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      To get started, set up a data source.
+    </div>
+  </div>
+<% else %>
+  <table class="table table-hover table-borderless">
+    <tbody>
+    <% @sources.each do |source| %>
+      <tr>
+        <td>
+          <span class="member-actions">
+            <%= link_to icon('pencil'), edit_data_source_path(source) %>
+            <%= link_to icon('trash-o', class: 'text-danger'),
+                        data_source_path(source), method: :delete,
+                        data: { confirm: "Are you sure you want to delete #{source.name}?" } %>
+          </span>
+          <%= source.name %>
+        </td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+<% end %>

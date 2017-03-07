@@ -1,0 +1,18 @@
+<%= render 'form_errors' %>
+
+<%= form_tag data_source_path(@source), method: :patch,
+             class: 'form-horizontal' do %>
+  <%= render 'form_fields' %>
+
+  <div class="form-group">
+    <div class="col-md-offset-1 col-md-11">
+      <%= button_tag icon('floppy-o', 'Save'), class: 'btn btn-warning' %>
+      <%= link_to icon('close', 'Cancel'), data_sources_path, role: :button,
+                  class: 'btn btn-default' %>
+      <%= link_to icon('trash-o', 'Delete'), data_source_path(@source),
+                  method: :delete, role: :button,
+                  class: 'btn btn-danger btn-delete',
+                  data: { confirm: "Are you sure you want to delete #{@source.name}?" } %>
+    </div>
+  </div>
+<% end %>
