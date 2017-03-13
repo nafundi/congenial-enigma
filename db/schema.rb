@@ -10,10 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170307154433) do
+ActiveRecord::Schema.define(version: 20170312205935) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "alerts", force: :cascade do |t|
+    t.text     "rule_type",  null: false
+    t.jsonb    "rule_data",  null: false
+    t.text     "email",      null: false
+    t.text     "message",    null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "data_source_alerts", force: :cascade do |t|
+    t.integer  "data_source_id", null: false
+    t.integer  "alert_id",       null: false
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+    t.index ["alert_id"], name: "index_data_source_alerts_on_alert_id", using: :btree
+    t.index ["data_source_id"], name: "index_data_source_alerts_on_data_source_id", using: :btree
+  end
 
   create_table "data_sources", force: :cascade do |t|
     t.text     "name",       null: false

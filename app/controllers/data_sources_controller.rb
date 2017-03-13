@@ -42,7 +42,13 @@ class DataSourcesController < ApplicationController
   # This is the action for data sources pushing to the app, not for the app
   # itself pushing.
   def push
-    # Some data sources stop pushing unless they receive a successful response.
+    # Some data sources stop pushing unless they receive a successful response,
+    # so #push should never raise an error.
+    begin
+      @source.processor.process request
+    rescue => e
+      Rails.logger.error e.backtrace.join("\n")
+    end
     head 200
   end
 
