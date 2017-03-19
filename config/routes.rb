@@ -9,5 +9,7 @@ Rails.application.routes.draw do
       # itself pushing.
       post 'push'
     end
+
+    resources :alerts, except: :show
   end
 end

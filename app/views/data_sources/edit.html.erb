@@ -7,7 +7,8 @@
   <div class="form-group">
     <div class="col-md-offset-1 col-md-11">
       <%= button_tag icon('floppy-o', 'Save'), class: 'btn btn-warning' %>
-      <%= link_to icon('close', 'Cancel'), data_sources_path, role: :button,
+      <%= link_to icon('envelope-o', 'Alerts'),
+                  data_source_alerts_path(@source), role: :button,
                   class: 'btn btn-default' %>
       <%= link_to icon('trash-o', 'Delete'), data_source_path(@source),
                   method: :delete, role: :button,

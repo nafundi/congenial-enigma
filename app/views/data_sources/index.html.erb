@@ -17,6 +17,7 @@
         <td>
           <span class="member-actions">
             <%= link_to icon('pencil'), edit_data_source_path(source) %>
+            <%= link_to icon('envelope-o'), data_source_alerts_path(source) %>
             <%= link_to icon('trash-o', class: 'text-danger'),
                         data_source_path(source), method: :delete,
                         data: { confirm: "Are you sure you want to delete #{source.name}?" } %>
