@@ -1,0 +1,86 @@
+.table-borderless > thead > tr > th,
+.table-borderless > thead > tr > td,
+.table-borderless > tbody > tr > td,
+.table-borderless > tbody > tr > td {
+  border: none;
+}
+
+.form-inline {
+  .form-control {
+    &.form-inline-input-1 {
+      width: 1 / 12 * 100%;
+    }
+
+    &.form-inline-input-2 {
+      width: 2 / 12 * 100%;
+    }
+
+    &.form-inline-input-3 {
+      width: 3 / 12 * 100%;
+    }
+
+    &.form-inline-input-4 {
+      width: 4 / 12 * 100%;
+    }
+
+    &.form-inline-input-5 {
+      width: 5 / 12 * 100%;
+    }
+
+    &.form-inline-input-6 {
+      width: 6 / 12 * 100%;
+    }
+
+    &.form-inline-input-7 {
+      width: 7 / 12 * 100%;
+    }
+
+    &.form-inline-input-8 {
+      width: 8 / 12 * 100%;
+    }
+
+    &.form-inline-input-9 {
+      width: 9 / 12 * 100%;
+    }
+
+    &.form-inline-input-10 {
+      width: 10 / 12 * 100%;
+    }
+
+    &.form-inline-input-11 {
+      width: 11 / 12 * 100%;
+    }
+
+    &.form-inline-input-12 {
+      width: 100%;
+    }
+  }
+}
+
+.form-paragraph {
+  .row {
+    & > div {
+      margin-bottom: 18px;
+    }
+
+    & > .form-paragraph-text {
+      margin-bottom: 9px;
+    }
+  }
+}
+
+.collection-actions {
+  margin-bottom: 18px;
+}
+
+.member-actions {
+  margin-right: 12px;
+
+  i {
+    margin-right: 3px;
+  }
+}
+
+.btn-delete {
+  float: right;
+}

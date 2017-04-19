@@ -1,0 +1,26 @@
+<% if @alert.errors.any? %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">Invalid Alert</div>
+    <div class="panel-body">
+      <p>
+        There
+        <% if @alert.errors.size == 1 %>
+          was a problem
+        <% else %>
+          were problems
+        <% end %>
+        saving the alert:
+      </p>
+      <ul>
+        <% @alert.errors.each do |attribute, error| %>
+          <li>
+            <% unless attribute == :base %>
+              <%= Alert.human_attribute_name(attribute) %>
+            <% end %>
+            <%= error %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
