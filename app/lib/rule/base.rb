@@ -13,7 +13,7 @@
 # arguments. The Alert model passes String scalars: non-Enumerable elements of
 # the Hash are String. It is the constructor's responsibility to parse and
 # validate arguments. (At some point this last step may be automated using an
-# approach similar to DataSource::Type::Settings.)
+# approach similar to ModelAttributes::Settings.)
 #
 # See also DataSource::Type::Rules for a discussion of the difference between a
 # rule type and a parameterized rule. (The word "rule" can mean either, but they
