@@ -1,0 +1,33 @@
+<div class="collection-actions">
+  <%= link_to icon('plus', 'Add Server'), new_configured_service_path,
+              role: :button, class: 'btn btn-success' %>
+</div>
+
+<% if @services.none? %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      No servers have been configured yet.
+    </div>
+  </div>
+<% else %>
+  <table class="table table-hover table-borderless">
+    <tbody>
+      <% @services.each do |service| %>
+        <tr>
+          <td>
+            <span class="member-actions">
+              <%= link_to icon('pencil'),
+                          edit_configured_service_path(service) %>
+              <%= link_to icon('files-o'),
+                          configured_service_data_sources_path(service) %>
+              <%= link_to icon('trash-o', class: 'text-danger'),
+                          configured_service_path(service), method: :delete,
+                          data: { confirm: "Are you sure you want to delete #{service.name}?" } %>
+            </span>
+            <%= service.name %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>

@@ -1,0 +1,12 @@
+<%= form_tag configured_services_path, method: :post,
+             class: 'form-horizontal' do %>
+  <%= render 'form_fields' %>
+
+  <div class="form-group">
+    <div class="col-md-offset-1 col-md-11">
+      <%= button_tag icon('plus', 'Add Server'), class: 'btn btn-success' %>
+      <%= link_to icon('close', 'Cancel'), :back, role: :button,
+                  class: 'btn btn-default' %>
+    </div>
+  </div>
+<% end %>
