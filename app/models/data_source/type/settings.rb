@@ -35,8 +35,6 @@ module DataSource::Type::Settings
                     instance_predicate: false
     self._settings = Set.new.freeze
 
-    after_initialize :initialize_settings
-
     before_validation :stringify_settings
     validate :settings_are_json_object
     validate :settings_are_supported
@@ -82,10 +80,6 @@ module DataSource::Type::Settings
   end
 
   protected
-
-  def initialize_settings
-    self.settings ||= {}
-  end
 
   def stringify_settings
     settings.stringify_keys!

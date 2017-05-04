@@ -2,8 +2,6 @@ class Alert < ApplicationRecord
   has_many :data_source_alerts, dependent: :destroy
   has_many :data_sources, through: :data_source_alerts
 
-  after_initialize :initialize_rule_data
-
   validate :rule_supported_by_sources
   validate :rule_instantiates_without_error
 
@@ -47,10 +45,6 @@ class Alert < ApplicationRecord
   end
 
   protected
-
-  def initialize_rule_data
-    self.rule_data ||= {}
-  end
 
   # This validation implicitly checks that rule_type is the name of a Rule::Base
   # subclass.
