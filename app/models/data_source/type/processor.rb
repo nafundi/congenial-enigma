@@ -3,8 +3,9 @@
 # typically associated with its own data processor class.
 #
 # Use ::with_processor to set the data source type's data processor class.
-# Afterwards, a data source object may instantiate a data processor object using
-# #processor.
+# Otherwise, it defaults to the data processor with the same demodulized class
+# name as the data source. Once the data processor class is set, a data source
+# object may instantiate a data processor object using #processor.
 #
 module DataSource::Type::Processor
   extend ActiveSupport::Concern
