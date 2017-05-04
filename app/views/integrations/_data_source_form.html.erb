@@ -1,0 +1,69 @@
+<form>
+  <div id="choice-service">
+    <p>
+      <%= image_tag 'services/odk.png', id: 'service-odk', class: 'service' %>
+      <%= image_tag 'services/dhis2.png', id: 'service-dhis2', class: 'service',
+                    data: { toggle: :popover, trigger: :manual,
+                    placement: :right,
+                    content: "We’ve started work on our DHIS2 integration. Stay tuned!" } %>
+    </p>
+  </div>
+  <div id="choices-odk">
+    <div class="panel panel-default" id="choice-server">
+      <div class="panel-heading">
+        <h5 class="panel-title">Choose a Server</h5>
+      </div>
+      <div class="panel-body">
+        <% @services.each do |service| %>
+          <div class="radio">
+            <label>
+              <%= radio_button_tag 'configured_service_id', service.id %>
+              <strong><%= service.name %></strong> <%= service.url %>
+            </label>
+          </div>
+        <% end %>
+
+        <p class="action action-add">
+          <%= link_to icon('plus'), new_configured_service_path %>
+          <%= link_to 'Add a New Server', new_configured_service_path %>
+        </p>
+        <button type="button" class="btn btn-primary action action-choose">
+          Use This Server
+        </button>
+        <div class="action action-modify">
+          <%= link_to icon('pencil'), '#', role: :button %>
+          <%= link_to 'Change', '#', role: :button %>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default" id="choice-form">
+      <div class="panel-heading">
+        <h5 class="panel-title">Choose a Form</h5>
+      </div>
+      <div class="panel-body">
+        <% @sources.each do |source| %>
+          <%= content_tag :div, class: 'radio', data: {
+                          configured_service_id: source.configured_service_id } do %>
+            <label>
+              <%= radio_button_tag 'data_source_id', source.id %>
+              <strong><%= source.name %></strong> <%= source.form_id %>
+            </label>
+          <% end %>
+        <% end %>
+
+        <%= content_tag :p, class: 'action action-add', data: {
+                        path: new_configured_service_data_source_path(0) } do %>
+          <%= link_to icon('plus'), '#' %>
+          <%= link_to 'Add a New Form', '#' %>
+        <% end %>
+        <button type="button" class="btn btn-primary action action-choose">
+          Use This Form
+        </button>
+        <div class="action action-modify">
+          <%= link_to icon('pencil'), '#', role: :button %>
+          <%= link_to 'Change', '#', role: :button %>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

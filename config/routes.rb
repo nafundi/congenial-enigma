@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
-  root 'data_sources#index'
+  root 'integrations#index'
 
   resources :configured_services, except: :show do
     resources :data_sources, except: :show do
@@ -12,4 +12,5 @@ Rails.application.routes.draw do
       end
     end
   end
+  resources :integrations, only: [:index, :new, :create, :destroy]
 end

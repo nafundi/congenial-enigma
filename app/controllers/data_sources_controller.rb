@@ -17,7 +17,7 @@ class DataSourcesController < ApplicationController
   def create
     @source = DataSource.new(source_params)
     if @source.save
-      redirect_to configured_service_data_sources_path(@service)
+      redirect_to new_integration_path
     else
       render_new
     end

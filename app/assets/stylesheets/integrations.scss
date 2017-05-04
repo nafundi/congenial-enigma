@@ -1,0 +1,37 @@
+#new-integration {
+  td:first-child {
+    width: 33px;
+  }
+
+  .service {
+    margin: 0 9px 9px 0;
+  }
+
+  #service-odk {
+    width: 120px;
+  }
+
+  #service-dhis2 {
+    width: 96px;
+  }
+
+  #choices-odk {
+    display: none;
+
+    .action a i {
+      color: #337ab7;
+    }
+
+    .action-choose, .action-modify {
+      display: none;
+    }
+
+    #choice-form {
+      display: none;
+    }
+  }
+
+  #alert-form {
+    display: none;
+  }
+}

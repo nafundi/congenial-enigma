@@ -11,7 +11,7 @@ class ConfiguredServicesController < ApplicationController
   def create
     @service = ConfiguredService.new(service_params)
     if @service.save
-      redirect_to configured_services_path
+      redirect_to new_integration_path
     else
       render_new
     end
