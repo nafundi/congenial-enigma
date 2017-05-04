@@ -3,6 +3,7 @@ module ConfiguredService::Type
 
   include ModelAttributes::Type
   include ModelAttributes::Settings
+  include ConfiguredService::Type::TechnologyName
 
   # Whitelist of demodulized names of configured service classes
   TYPE_CLASS_NAMES = %w[].freeze

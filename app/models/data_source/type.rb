@@ -16,7 +16,6 @@ module DataSource::Type
 
   include ModelAttributes::Type
   include ModelAttributes::Settings
-  include DataSource::Type::Title
   include DataSource::Type::Processor
   include DataSource::Type::Rules
 

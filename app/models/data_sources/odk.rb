@@ -1,5 +1,4 @@
 class DataSources::Odk < DataSource
-  with_type_title 'ODK Aggregate'
   with_settings :url
   with_rules [
     ::Rules::Odk::NumericEquality,
