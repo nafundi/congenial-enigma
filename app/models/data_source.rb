@@ -2,6 +2,9 @@ class DataSource < ApplicationRecord
   include ModelAttributes::Name
   include DataSource::Type
 
+  belongs_to :configured_service
+  validates :configured_service, presence: true
+
   has_many :data_source_alerts
   has_many :alerts, through: :data_source_alerts
   before_destroy :destroy_alerts

@@ -20,12 +20,24 @@ module DataSource::Type
   include DataSource::Type::Processor
   include DataSource::Type::Rules
 
-  # Whitelist of the base names of data source classes.
+  # Whitelist of demodulized names of data source classes
   TYPE_CLASS_NAMES = %w[Odk].freeze
+
+  included do
+    validate :type_must_match_configured_service
+  end
 
   class_methods do
     def type_class_names
-      TYPE_CLASS_NAMES.map { |basename| "DataSources::#{basename}" }
+      TYPE_CLASS_NAMES.map { |name| "DataSources::#{name}" }
+    end
+  end
+
+  protected
+
+  def type_must_match_configured_service
+    unless type.demodulize == configured_service.type.demodulize
+      errors.add :type, 'must match the type of the configured service'
     end
   end
 end

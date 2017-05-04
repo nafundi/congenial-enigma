@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170430172435) do
+ActiveRecord::Schema.define(version: 20170430194855) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -20,6 +20,14 @@ ActiveRecord::Schema.define(version: 20170430172435) do
     t.jsonb    "rule_data",  default: {}, null: false
     t.text     "email",                   null: false
     t.text     "message",                 null: false
+    t.datetime "created_at",              null: false
+    t.datetime "updated_at",              null: false
+  end
+
+  create_table "configured_services", force: :cascade do |t|
+    t.text     "type",                    null: false
+    t.text     "name",                    null: false
+    t.jsonb    "settings",   default: {}, null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
   end
@@ -34,11 +42,12 @@ ActiveRecord::Schema.define(version: 20170430172435) do
   end
 
   create_table "data_sources", force: :cascade do |t|
-    t.text     "name",                    null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
-    t.text     "type",                    null: false
-    t.jsonb    "settings",   default: {}, null: false
+    t.text     "name",                               null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.text     "type",                               null: false
+    t.jsonb    "settings",              default: {}, null: false
+    t.integer  "configured_service_id",              null: false
   end
 
 end
