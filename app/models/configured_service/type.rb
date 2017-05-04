@@ -6,7 +6,7 @@ module ConfiguredService::Type
   include ConfiguredService::Type::TechnologyName
 
   # Whitelist of demodulized names of configured service classes
-  TYPE_CLASS_NAMES = %w[].freeze
+  TYPE_CLASS_NAMES = %w[Odk].freeze
 
   class_methods do
     def type_class_names
