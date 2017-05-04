@@ -1,16 +1,19 @@
 <%= render 'form_errors' %>
 
-<%= form_tag data_source_path(@source), method: :patch,
-             class: 'form-horizontal' do %>
+<%= form_tag configured_service_data_source_path(@service, @source),
+             method: :patch, class: 'form-horizontal' do %>
   <%= render 'form_fields' %>
 
   <div class="form-group">
-    <div class="col-md-offset-1 col-md-11">
+    <div class="col-md-offset-2 col-md-4">
       <%= button_tag icon('floppy-o', 'Save'), class: 'btn btn-warning' %>
-      <%= link_to icon('envelope-o', 'Alerts'),
-                  data_source_alerts_path(@source), role: :button,
+      <%= link_to icon('close', 'Cancel'),
+                  configured_service_data_sources_path(@service), role: :button,
                   class: 'btn btn-default' %>
-      <%= link_to icon('trash-o', 'Delete'), data_source_path(@source),
+    </div>
+    <div class="col-md-2">
+      <%= link_to icon('trash-o', 'Delete'),
+                  configured_service_data_source_path(@service, @source),
                   method: :delete, role: :button,
                   class: 'btn btn-danger btn-delete',
                   data: { confirm: "Are you sure you want to delete #{@source.name}?" } %>

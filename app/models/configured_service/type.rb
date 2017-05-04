@@ -25,5 +25,13 @@ module ConfiguredService::Type
     def type_class_names
       TYPE_CLASS_NAMES.map { |name| "ConfiguredServices::#{name}" }
     end
+
+    # Each configured service class corresponds to a data source class.
+    # #data_source_class returns that class.
+    def data_source_class
+      name = 'DataSources::' + self.name.demodulize
+      raise ArgumentError unless DataSource.type_class_names.include? name
+      name.constantize
+    end
   end
 end

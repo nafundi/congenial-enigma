@@ -1,6 +1,6 @@
 <% if @source.errors.any? %>
   <div class="panel panel-danger">
-    <div class="panel-heading">Invalid Data Source</div>
+    <div class="panel-heading">Invalid Form</div>
     <div class="panel-body">
       <p>
         There
@@ -9,7 +9,7 @@
         <% else %>
           were problems
         <% end %>
-        saving the data source:
+        saving the form:
       </p>
       <ul>
         <% @source.errors.each do |attribute, error| %>
