@@ -19,7 +19,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Congenial Enigma</a>
+          <%= link_to 'Congenial Enigma', root_path, class: 'navbar-brand' %>
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -30,9 +30,11 @@
     <div class="container">
       <div class="row">
         <div class="col-md-offset-1 col-md-10">
-          <ol class="breadcrumb">
-            <%= render_breadcrumbs tag: :li, separator: '' %>
-          </ol>
+          <% unless render_breadcrumbs.blank? %>
+            <ol class="breadcrumb">
+              <%= render_breadcrumbs tag: :li, separator: '' %>
+            </ol>
+          <% end %>
 
           <%= yield %>
         </div>
