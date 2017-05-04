@@ -1,25 +1,30 @@
 class DataSourcesController < ApplicationController
+  before_action :set_service
   before_action :set_source, only: [:edit, :update, :destroy, :push]
   skip_before_action :verify_authenticity_token, only: :push
 
-  add_breadcrumb 'Data Sources', :data_sources_path
+  before_action do
+    add_breadcrumb 'My Servers', configured_services_path
+    add_breadcrumb @service.name, edit_configured_service_path(@service)
+    add_breadcrumb 'Forms', configured_service_data_sources_path(@service)
+  end
 
   def new
-    @source = DataSource.new
+    @source = @service.class.data_source_class.new
     render_new
   end
 
   def create
     @source = DataSource.new(source_params)
     if @source.save
-      redirect_to data_sources_path
+      redirect_to new_integration_path
     else
       render_new
     end
   end
 
   def index
-    @sources = DataSource.order_by_name.load
+    @sources = @service.data_sources.order_by_name.load
   end
 
   def edit
@@ -28,7 +33,7 @@ class DataSourcesController < ApplicationController
 
   def update
     if @source.update(source_params)
-      redirect_to data_sources_path
+      redirect_to configured_service_data_sources_path(@service)
     else
       render_edit
     end
@@ -36,7 +41,7 @@ class DataSourcesController < ApplicationController
 
   def destroy
     @source.destroy
-    redirect_to data_sources_path
+    redirect_to configured_service_data_sources_path(@service)
   end
 
   # This is the action for data sources pushing to the app, not for the app
@@ -54,20 +59,26 @@ class DataSourcesController < ApplicationController
 
   protected
 
+  def set_service
+    @service = ConfiguredService.find(params[:configured_service_id])
+  end
+
   def set_source
-    @source = DataSource.find(params[:id])
+    @source = @service.data_sources.find(params[:id])
   end
 
   def render_new
-    add_breadcrumb 'Add Data Source'
+    add_breadcrumb 'Add Form'
     render 'new'
   end
 
   def source_params
-    raise ArgumentError unless DataSource.type_class_names.include?(params[:type])
-    source_class = params[:type].constantize
+    source_class = @service.class.data_source_class
     settings = source_class.supported_settings.map(&:to_sym)
-    params.permit(:type, :name, settings: settings)
+    source_params = params.permit(:configured_service_id, :name,
+                                  settings: settings)
+    source_params[:type] = source_class.name
+    source_params
   end
 
   def render_edit

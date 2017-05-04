@@ -2,10 +2,8 @@ class Alert < ApplicationRecord
   has_many :data_source_alerts, dependent: :destroy
   has_many :data_sources, through: :data_source_alerts
 
-  after_initialize :initialize_rule_data
-
-  validate :rule_supported_by_sources
-  validate :rule_instantiates_without_error
+  validate :rule_must_be_supported
+  validate :rule_must_instantiate
 
   validates :email, presence: true
   validates :message, presence: true
@@ -48,13 +46,10 @@ class Alert < ApplicationRecord
 
   protected
 
-  def initialize_rule_data
-    self.rule_data ||= {}
-  end
-
-  # This validation implicitly checks that rule_type is the name of a Rule::Base
-  # subclass.
-  def rule_supported_by_sources
+  # #rule_must_be_supported validates that the rule type is supported by each of
+  # the alert's data sources. It implicitly validates that rule_type is the name
+  # of a Rule::Base subclass.
+  def rule_must_be_supported
     data_sources.distinct.pluck(:type).each do |source_type|
       supported_rules = source_type.constantize.supported_rules
       if supported_rules.none? { |rule_class| rule_class.name == rule_type }
@@ -64,7 +59,7 @@ class Alert < ApplicationRecord
     end
   end
 
-  def rule_instantiates_without_error
+  def rule_must_instantiate
     begin
       reload_rule
     rescue => e

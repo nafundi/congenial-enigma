@@ -31,8 +31,8 @@ RSpec.describe DataSource do
       data_source.save!
     end
 
-    it 'requires a URL' do
-      data_source.url = nil
+    it 'requires a form ID' do
+      data_source.form_id = nil
       expect(data_source).not_to be_valid
     end
   end

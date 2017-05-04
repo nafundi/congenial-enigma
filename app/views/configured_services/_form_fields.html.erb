@@ -1,0 +1,17 @@
+<div class="form-group">
+  <%= label_tag :name, nil, class: 'col-md-1 control-label' %>
+  <div class="col-md-6">
+    <%= text_field_tag :name, @service.name, placeholder: 'Name',
+                       required: true, class: 'form-control' %>
+  </div>
+</div>
+<div class="form-group">
+  <%= label_tag 'settings[url]', 'URL', class: 'col-md-1 control-label' %>
+  <div class="col-md-11">
+    <%= text_field_tag 'settings[url]', @service.settings['url'],
+                       placeholder: 'URL', required: true,
+                       class: 'form-control' %>
+  </div>
+</div>
+<%# TODO: Extend this UI beyond ODK. %>
+<%= hidden_field_tag :type, 'ConfiguredServices::Odk' %>
