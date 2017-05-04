@@ -14,6 +14,7 @@
 module DataSource::Type
   extend ActiveSupport::Concern
 
+  include ModelAttributes::Type
   include DataSource::Type::Title
   include DataSource::Type::Settings
   include DataSource::Type::Processor
@@ -26,20 +27,5 @@ module DataSource::Type
     def type_class_names
       TYPE_CLASS_NAMES.map { |basename| "DataSources::#{basename}" }
     end
-
-    def type_classes
-      type_class_names.map(&:constantize)
-    end
-  end
-
-  included do
-    validates :type, inclusion: { in: type_class_names }
-    validate :type_has_not_changed
-  end
-
-  protected
-
-  def type_has_not_changed
-    errors.add :type, 'cannot change' if persisted? && type_changed?
   end
 end
