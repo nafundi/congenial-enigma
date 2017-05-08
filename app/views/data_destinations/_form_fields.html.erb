@@ -1,0 +1,17 @@
+<div class="form-group">
+  <%= label_tag :name, 'List Name', class: 'col-md-2 control-label' %>
+  <div class="col-md-6">
+    <%= text_field_tag :name, @destination.name,
+                       placeholder: 'A name for the list', required: true,
+                       class: 'form-control' %>
+  </div>
+</div>
+<div class="form-group">
+  <%= label_tag 'settings[email_list]', 'Emails',
+                class: 'col-md-2 control-label' %>
+  <div class="col-md-10">
+    <%= text_area_tag 'settings[email_list]', @destination.emails&.join(', '),
+                       placeholder: 'Emails separated by commas',
+                       required: true, class: 'form-control' %>
+  </div>
+</div>

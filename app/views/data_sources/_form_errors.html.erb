@@ -1,6 +1,8 @@
 <% if @source.errors.any? %>
   <div class="panel panel-danger">
-    <div class="panel-heading">Invalid Form</div>
+    <div class="panel-heading">
+      Invalid <%= @service.class.terminology.data_source.titleize %>
+    </div>
     <div class="panel-body">
       <p>
         There
@@ -9,7 +11,7 @@
         <% else %>
           were problems
         <% end %>
-        saving the form:
+        saving the <%= @service.class.terminology.data_source %>:
       </p>
       <ul>
         <% @source.errors.each do |attribute, error| %>

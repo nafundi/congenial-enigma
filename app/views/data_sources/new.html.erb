@@ -6,7 +6,8 @@
 
   <div class="form-group">
     <div class="col-md-offset-2 col-md-10">
-      <%= button_tag icon('plus', 'Add Form'), class: 'btn btn-success' %>
+      <% term = @service.class.terminology.data_source.titleize %>
+      <%= button_tag icon('plus', 'Add ' + term), class: 'btn btn-success' %>
       <%= link_to icon('close', 'Cancel'), :back, role: :button,
                   class: 'btn btn-default' %>
     </div>

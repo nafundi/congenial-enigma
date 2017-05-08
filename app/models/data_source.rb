@@ -1,9 +1,10 @@
 class DataSource < ApplicationRecord
+  include Draftable
   include ModelAttributes::Name
+  include ServiceProvided
   include DataSource::Type
 
-  belongs_to :configured_service
-  validates :configured_service, presence: true
+  with_draft_attribute :data_source_id
 
   has_many :data_source_alerts
   has_many :alerts, through: :data_source_alerts

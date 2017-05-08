@@ -1,12 +1,15 @@
 <div class="collection-actions">
-  <%= link_to icon('plus', 'Add Server'), new_configured_service_path,
+  <% term = @service_class.terminology.configured_service.titleize %>
+  <%= link_to icon('plus', 'Add ' + term),
+              new_configured_service_path(type: params[:type]),
               role: :button, class: 'btn btn-success' %>
 </div>
 
 <% if @services.none? %>
   <div class="panel panel-default">
     <div class="panel-body">
-      No servers have been configured yet.
+      No <%= @service_class.terminology.configured_service.pluralize %> have
+      been configured yet.
     </div>
   </div>
 <% else %>
@@ -18,8 +21,13 @@
             <span class="member-actions">
               <%= link_to icon('pencil'),
                           edit_configured_service_path(service) %>
-              <%= link_to icon('files-o'),
-                          configured_service_data_sources_path(service) %>
+              <% if service.class.provides? :data_source %>
+                <%= link_to icon('files-o'),
+                            configured_service_data_sources_path(service) %>
+              <% elsif service.class.provides? :data_destination %>
+                <%= link_to icon('files-o'),
+                            configured_service_data_destinations_path(service) %>
+              <% end %>
               <%= link_to icon('trash-o', class: 'text-danger'),
                           configured_service_path(service), method: :delete,
                           data: { confirm: "Are you sure you want to delete #{service.name}?" } %>

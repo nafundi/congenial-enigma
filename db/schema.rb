@@ -10,18 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170430194855) do
+ActiveRecord::Schema.define(version: 20170508082655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
+  create_table "alert_drafts", force: :cascade do |t|
+    t.integer  "data_source_configured_service_id"
+    t.integer  "data_source_id"
+    t.text     "field_name"
+    t.text     "rule_type"
+    t.decimal  "rule_value"
+    t.text     "message"
+    t.integer  "data_destination_configured_service_id"
+    t.integer  "data_destination_id"
+    t.integer  "row_count_constraint",                   default: 0
+    t.datetime "created_at",                                         null: false
+    t.datetime "updated_at",                                         null: false
+    t.index ["row_count_constraint"], name: "index_alert_drafts_on_row_count_constraint", unique: true, using: :btree
+  end
+
   create_table "alerts", force: :cascade do |t|
-    t.text     "rule_type",               null: false
-    t.jsonb    "rule_data",  default: {}, null: false
-    t.text     "email",                   null: false
-    t.text     "message",                 null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.text     "rule_type",                        null: false
+    t.jsonb    "rule_data",           default: {}, null: false
+    t.text     "message",                          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "data_destination_id",              null: false
   end
 
   create_table "configured_services", force: :cascade do |t|
@@ -30,6 +45,16 @@ ActiveRecord::Schema.define(version: 20170430194855) do
     t.jsonb    "settings",   default: {}, null: false
     t.datetime "created_at",              null: false
     t.datetime "updated_at",              null: false
+  end
+
+  create_table "data_destinations", force: :cascade do |t|
+    t.text     "type",                               null: false
+    t.integer  "configured_service_id",              null: false
+    t.text     "name",                               null: false
+    t.jsonb    "settings",              default: {}, null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+    t.index ["configured_service_id"], name: "index_data_destinations_on_configured_service_id", using: :btree
   end
 
   create_table "data_source_alerts", force: :cascade do |t|
@@ -48,6 +73,15 @@ ActiveRecord::Schema.define(version: 20170430194855) do
     t.text     "type",                               null: false
     t.jsonb    "settings",              default: {}, null: false
     t.integer  "configured_service_id",              null: false
+  end
+
+  create_table "oauth_tokens", force: :cascade do |t|
+    t.integer  "configured_service_id", null: false
+    t.text     "access_token",          null: false
+    t.datetime "expires_at",            null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.index ["configured_service_id"], name: "index_oauth_tokens_on_configured_service_id", unique: true, using: :btree
   end
 
 end

@@ -1,12 +1,12 @@
 class DataSources::Odk < DataSource
   with_settings :form_id
+  validate :validate_form_id
+
   with_rules [
     ::Rules::Odk::NumericEquality,
     ::Rules::Odk::GreaterThan,
     ::Rules::Odk::LessThan
   ]
-
-  validate :validate_form_id
 
   alias_method :server, :configured_service
 

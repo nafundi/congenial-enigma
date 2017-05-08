@@ -1,0 +1,15 @@
+Hello,
+
+<% if test.success? %>
+An alert was issued for incoming data from the ODK Aggregate server <%= form.server.name %> at <%= form.server.url %>. A submission for the form <%= form.name %> triggered an alert with this message:
+
+<%= alert.message %>
+<% else %>
+An alert issued an error for incoming data from the ODK Aggregate server <%= form.server.name %> at <%= form.server.url %>. A submission for the form <%= form.name %> could not be processed for the following reason:
+
+<%= test.error %>
+<% end %>
+
+To view your integrations, visit:
+
+<%= integrations_url(url_options) %>

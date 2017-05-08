@@ -1,0 +1,20 @@
+<p>Hello,</p>
+
+<% if test.success? %>
+  <p>An alert was issued for incoming data from the ODK Aggregate server
+  <strong><%= form.server.name %></strong> at
+  <%= link_to form.server.url, form.server.url %>. A submission for the form
+  <strong><%= form.name %></strong> triggered an alert with this message:</p>
+
+  <blockquote><%= alert.message %></blockquote>
+<% else %>
+  <p>An alert issued an error for incoming data from the ODK Aggregate server
+  <strong><%= form.server.name %></strong> at
+  <%= link_to form.server.url, form.server.url %>. A submission for the form
+  <strong><%= form.name %></strong> could not be processed for the following
+  reason:</p>
+
+  <blockquote><%= test.error %></blockquote>
+<% end %>
+
+<%= link_to 'View Your Integrations', integrations_url(url_options) %>

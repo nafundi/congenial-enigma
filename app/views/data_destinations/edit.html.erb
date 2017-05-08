@@ -1,0 +1,20 @@
+<%= render 'form_errors' %>
+
+<%= form_tag configured_service_data_destination_path(@service, @destination),
+             method: :patch, class: 'form-horizontal' do %>
+  <%= render 'form_fields' %>
+
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+      <%= button_tag icon('floppy-o', 'Save'), class: 'btn btn-default' %>
+      <%= link_to icon('close', 'Cancel'),
+                  configured_service_data_destinations_path(@service),
+                  role: :button, class: 'btn btn-default' %>
+      <%= link_to icon('trash-o', 'Delete'),
+                  configured_service_data_destination_path(@service, @destination),
+                  method: :delete, role: :button,
+                  class: 'btn btn-danger btn-delete',
+                  data: { confirm: "Are you sure you want to delete #{@destination.name}?" } %>
+    </div>
+  </div>
+<% end %>

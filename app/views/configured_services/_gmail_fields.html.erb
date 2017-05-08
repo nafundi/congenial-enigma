@@ -1,0 +1,50 @@
+<div class="form-group">
+  <%= label_tag :name, nil, class: 'col-md-1 control-label' %>
+  <div class="col-md-6">
+    <%= text_field_tag :name, @service.name, placeholder: 'Name',
+                       required: true, class: 'form-control' %>
+  </div>
+</div>
+<% if @service.id.present? %>
+  <div class="alert alert-info col-md-offset-1 col-md-11">
+    <p>
+      <% status = @service.token_status %>
+      <% case status %>
+      <% when :never_connected %>
+        Connect this account to Gmail to enable integrations.
+      <% when :safely_connected, :almost_disconnected %>
+        This account is connected to Gmail for the next
+        <%# For status == :almost_disconnected, seconds may even be 0 at this
+            point. In that case, the language that follows will be out-of-date.
+            However, that should be unproblematic, because the link below always
+            points to the same URL. %>
+        <% seconds = @service.oauth_token.seconds_to_expiration %>
+        <% minutes = seconds >= 60 ? seconds / 60 : 1 %>
+        <%= minutes %> <%= minutes == 1 ? 'minute' : 'minutes' %>.
+        Refresh the connection to extend.
+      <% when :disconnected %>
+        This account’s connection to Gmail has expired. Reconnect it to enable
+        integrations.
+      <% else %>
+        <% raise NotImplementedError %>
+      <% end %>
+    </p>
+    <p>
+      <%= link_to @service.authorization_uri, class: 'btn btn-primary',
+                  role: :button do %>
+        <%= icon('external-link-square') %>
+
+        <% case status %>
+        <% when :never_connected %>
+          Connect
+        <% when :safely_connected, :almost_disconnected %>
+          Refresh
+        <% when :disconnected %>
+          Reconnect
+        <% else %>
+          <% raise NotImplementedError %>
+        <% end %>
+      <% end %>
+    </p>
+  </div>
+<% end %>

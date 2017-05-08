@@ -1,16 +1,16 @@
 <%= form_tag configured_service_path(@service), method: :patch,
              class: 'form-horizontal' do %>
-  <%= render 'form_fields' %>
+  <%= render_fields %>
 
   <div class="form-group">
     <div class="col-md-offset-1 col-md-11">
-      <%= button_tag icon('floppy-o', 'Save'), class: 'btn btn-warning' %>
+      <%= button_tag icon('floppy-o', 'Save'), class: 'btn btn-default' %>
       <%= link_to icon('close', 'Cancel'), :back, role: :button,
                   class: 'btn btn-default' %>
       <%= link_to icon('trash-o', 'Delete'), configured_service_path(@service),
-                  method: :delete, role: :button,
-                  class: 'btn btn-danger btn-delete',
-                  data: { confirm: "Are you sure you want to delete #{@service.name}?" } %>
+                  method: :delete, class: 'btn btn-danger btn-delete',
+                  role: :button, data: {
+                  confirm: "Are you sure you want to delete #{@service.name}?" } %>
     </div>
   </div>
 <% end %>

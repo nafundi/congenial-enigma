@@ -1,0 +1,92 @@
+<div class="choices" id="choices-data-source">
+  <div class="choice" id="choice-data-source-service">
+    <p>
+      <%= link_to '#', id: 'service-odk', class: 'service', role: :button do %>
+        <%= image_tag 'services/odk.png' %>
+      <% end %>
+      <%= link_to '#', id: 'service-dhis2', class: 'service', role: :button,
+                  data: { toggle: :popover, trigger: :manual, placement: :right,
+                  content: "We’ve started work on our DHIS2 integration. Stay tuned!" } do %>
+        <%= image_tag 'services/dhis2.png' %>
+      <% end %>
+    </p>
+  </div>
+
+  <div class="choices" id="choices-odk">
+    <% has_draft = @draft.data_source_configured_service_id.present? %>
+    <%= content_tag :div, class: 'panel panel-default choice',
+                    id: 'choice-server', data: { has_draft: has_draft } do %>
+      <div class="panel-heading">
+        <h5 class="panel-title"><span>Choose a Server</span></h5>
+      </div>
+      <div class="panel-body">
+        <form>
+          <% @source_services.each.with_index do |service, i| %>
+            <div class="radio">
+              <label>
+                <% if @draft.data_source_configured_service_id.present? %>
+                  <% checked = service.id == @draft.data_source_configured_service_id %>
+                <% else %>
+                  <% checked = i == 0 %>
+                <% end %>
+                <%= radio_button_tag 'data_source_configured_service_id',
+                                     service.id, checked, required: true %>
+                <strong><%= service.name %></strong> <%= service.url %>
+              </label>
+            </div>
+          <% end %>
+
+          <p class="action action-add">
+            <%= link_to icon('plus'), new_configured_service_path(type: 'Odk') %>
+            <%= link_to 'Add a New Server', new_configured_service_path(type: 'Odk') %>
+          </p>
+          <%= button_tag 'Use This Server',
+                         class: 'btn btn-primary action action-complete' %>
+          <div class="action action-revisit">
+            <%= link_to icon('pencil'), '#', role: :button %>
+            <%= link_to 'Change', '#', role: :button %>
+          </div>
+        </div>
+      </form>
+    <% end %>
+
+    <%= content_tag :div, class: 'panel panel-default choice',
+                    id: 'choice-form',
+                    data: { has_draft: @draft.data_source_id.present? } do %>
+      <div class="panel-heading">
+        <h5 class="panel-title"><span>Choose a Form</span></h5>
+      </div>
+      <div class="panel-body">
+        <form>
+          <% @sources.each.with_index do |source, i| %>
+            <%= content_tag :div, class: 'radio', data: {
+                            configured_service_id: source.configured_service_id } do %>
+              <label>
+                <% if @draft.data_source_id.present? %>
+                  <% checked = source.id == @draft.data_source_id %>
+                <% else %>
+                  <% checked = i == 0 %>
+                <% end %>
+                <%= radio_button_tag 'data_source_id', source.id, checked,
+                                     required: true %>
+                <strong><%= source.name %></strong> <%= source.form_id %>
+              </label>
+            <% end %>
+          <% end %>
+
+          <%= content_tag :p, class: 'action action-add', data: {
+                          path: new_configured_service_data_source_path(0) } do %>
+            <%= link_to icon('plus'), '#' %>
+            <%= link_to 'Add a New Form', '#' %>
+          <% end %>
+          <%= button_tag 'Use This Form',
+                         class: 'btn btn-primary action action-complete' %>
+          <div class="action action-revisit">
+            <%= link_to icon('pencil'), '#', role: :button %>
+            <%= link_to 'Change', '#', role: :button %>
+          </div>
+        </form>
+      </div>
+    <% end %>
+  </div>
+</div>

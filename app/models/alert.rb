@@ -2,10 +2,12 @@ class Alert < ApplicationRecord
   has_many :data_source_alerts, dependent: :destroy
   has_many :data_sources, through: :data_source_alerts
 
+  belongs_to :data_destination
+  validates :data_destination, presence: true
+
   validate :rule_must_be_supported
   validate :rule_must_instantiate
 
-  validates :email, presence: true
   validates :message, presence: true
 
   # #create_for_data_source is similar to #create, but it also creates a
@@ -24,14 +26,22 @@ class Alert < ApplicationRecord
     ActiveRecord::Base.transaction do
       alert = Alert.new(attributes, &block)
       if alert.save
-        data_source_alert = DataSourceAlert.create(
+        data_source_alert = DataSourceAlert.new(
           data_source_id: source_id,
           alert_id: alert.id
         )
-        raise ActiveRecord::Rollback unless data_source_alert.persisted?
+        if data_source_alert.save
+          AlertDraft.first&.destroy
+        else
+          raise ActiveRecord::Rollback
+        end
       end
     end
     alert
+  end
+
+  def self.draft
+    AlertDraft.first || AlertDraft.new
   end
 
   # Returns the cached rule.
@@ -53,7 +63,7 @@ class Alert < ApplicationRecord
     data_sources.distinct.pluck(:type).each do |source_type|
       supported_rules = source_type.constantize.supported_rules
       if supported_rules.none? { |rule_class| rule_class.name == rule_type }
-        errors.add :rule_type, "is not supported by one or more of the alert's data sources"
+        errors.add :rule_type, "is not supported by one or more of the alert’s data sources"
         return
       end
     end

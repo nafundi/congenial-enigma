@@ -10,8 +10,6 @@
 module DataSource::Type::Processor
   extend ActiveSupport::Concern
 
-  MESSENGER = Messenger::Logger.new
-
   included do
     # Avoid accessing this class attribute directly: use ::processor_class and
     # ::with_processor.
@@ -30,6 +28,6 @@ module DataSource::Type::Processor
   end
 
   def processor
-    self.class.processor_class.new(data_source: self, messenger: MESSENGER)
+    self.class.processor_class.new(self)
   end
 end

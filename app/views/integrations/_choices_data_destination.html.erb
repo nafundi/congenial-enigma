@@ -1,0 +1,87 @@
+<div class="choices" id="choices-data-destination">
+  <p>Choose how the alert will be delivered.</p>
+
+  <% has_draft = @draft.data_destination_configured_service_id.present? %>
+  <%= content_tag :div, class: 'panel panel-default choice',
+                  id: 'choice-gmail-account',
+                  data: { has_draft: has_draft } do %>
+    <div class="panel-heading">
+      <h5 class="panel-title"><span>Choose an Account</span></h5>
+    </div>
+    <div class="panel-body">
+      <p>Choose the Gmail account that will send the alert.</p>
+      <form>
+        <% first = true %>
+        <% @destination_services.each.with_index do |service, i| %>
+          <% connected = service.safely_connected? %>
+          <%= content_tag :div,
+                          class: 'radio' + (!connected ? ' disabled' : '') do %>
+            <label>
+              <% html_class = !connected ? 'permanently-disabled' : nil %>
+              <%= radio_button_tag 'data_destination_configured_service_id',
+                                   service.id, connected && first,
+                                   class: html_class, required: true,
+                                   disabled: !connected %>
+              <%= content_tag :strong, service.name,
+                             class: !connected ? 'text-muted' : nil %>
+              <% if connected %>
+                <%= service.email_address %>
+              <% else %>
+                <%= link_to service.never_connected? ? 'Connect' : 'Reconnect',
+                            service.authorization_uri %>
+              <% end %>
+            </label>
+          <% end %>
+          <% first = false if connected %>
+        <% end %>
+
+        <p class="action action-add">
+          <%= link_to icon('plus'), new_configured_service_path(type: 'Gmail') %>
+          <%= link_to 'Add a New Account', new_configured_service_path(type: 'Gmail') %>
+        </p>
+        <%= button_tag 'Use This Account',
+                       class: 'btn btn-primary action action-complete' %>
+        <div class="action action-revisit">
+          <%= link_to icon('pencil'), '#', role: :button %>
+          <%= link_to 'Change', '#', role: :button %>
+        </div>
+      </form>
+    </div>
+  <% end %>
+
+  <%= content_tag :div, class: 'panel panel-default choice',
+                  id: 'choice-recipient-list',
+                  data: { has_draft: @draft.data_destination_id.present? } do %>
+    <div class="panel-heading">
+      <h5 class="panel-title"><span>Choose a Recipient List</span></h5>
+    </div>
+    <div class="panel-body">
+      <p>Choose who will receive the alert.</p>
+      <form>
+        <% @destinations.each.with_index do |destination, i| %>
+          <%= content_tag :div, class: 'radio', data: {
+                          configured_service_id: destination.configured_service_id } do %>
+            <label>
+              <%= radio_button_tag 'data_destination_id', destination.id,
+                                   i == 0, required: true %>
+              <strong><%= destination.name %></strong>
+              <%= destination.emails.join(', ') %>
+            </label>
+          <% end %>
+        <% end %>
+
+        <%= content_tag :p, class: 'action action-add', data: {
+                        path: new_configured_service_data_destination_path(0) } do %>
+          <%= link_to icon('plus'), '#' %>
+          <%= link_to 'Add a New Recipient List', '#' %>
+        <% end %>
+        <%= button_tag 'Use This Recipient List',
+                       class: 'btn btn-primary action action-complete' %>
+        <div class="action action-revisit">
+          <%= link_to icon('pencil'), '#', role: :button %>
+          <%= link_to 'Change', '#', role: :button %>
+        </div>
+      </form>
+    </div>
+  <% end %>
+</div>

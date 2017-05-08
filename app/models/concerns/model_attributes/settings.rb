@@ -3,7 +3,7 @@
 # inheritance, when different subclasses may need to store separate settings.
 #
 # For example, suppose we are buildng an app that stores information about
-# users' pets in a Pet model. The Pet model uses single-table inheritance, so
+# users' pets in a Pet model. The Pet model uses single table inheritance, so
 # there are also classes Dog and Horse that extend Pet. All Pet subclasses have
 # some attributes in common, for example, name. Other attributes vary based on
 # species: we may wish to know whether a Dog can catch and how fast a Horse can

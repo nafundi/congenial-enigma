@@ -11,6 +11,15 @@ Rails.application.routes.draw do
         post 'push'
       end
     end
+    resources :data_destinations, except: :show
   end
-  resources :integrations, only: [:index, :new, :create, :destroy]
+  resources :integrations, only: [:index, :new, :create, :destroy] do
+    collection do
+      post 'save_draft'
+    end
+  end
+
+  namespace :oauth do
+    get :google
+  end
 end
