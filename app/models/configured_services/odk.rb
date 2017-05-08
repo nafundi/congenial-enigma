@@ -1,5 +1,7 @@
 class ConfiguredServices::Odk < ConfiguredService
   with_technology_name 'ODK Aggregate'
+  provides :data_source
+
   with_settings :url
 
   validate :validate_url

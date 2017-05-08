@@ -8,7 +8,9 @@
 #   2. Add the demodulized class name (for example, 'Odk') to TYPE_CLASS_NAMES.
 #   3. Provide a human-friendly name for the service technology using
 #      ::with_technology_name.
-#   4. See ModelAttributes::Settings for ways to store configured service
+#   4. Mark the service as a data source provider and/or a data destination
+#      provider: see ConfiguredServices::Type::Provider.
+#   5. See ModelAttributes::Settings for ways to store configured service
 #      settings.
 #
 module ConfiguredService::Type
@@ -17,6 +19,7 @@ module ConfiguredService::Type
   include ModelAttributes::Type
   include ModelAttributes::Settings
   include ConfiguredService::Type::TechnologyName
+  include ConfiguredService::Type::Provider
 
   # Whitelist of demodulized names of configured service classes
   TYPE_CLASS_NAMES = %w[Odk].freeze
@@ -24,14 +27,6 @@ module ConfiguredService::Type
   class_methods do
     def type_class_names
       TYPE_CLASS_NAMES.map { |name| "ConfiguredServices::#{name}" }
-    end
-
-    # Each configured service class corresponds to a data source class.
-    # #data_source_class returns that class.
-    def data_source_class
-      name = 'DataSources::' + self.name.demodulize
-      raise ArgumentError unless DataSource.type_class_names.include? name
-      name.constantize
     end
   end
 end
