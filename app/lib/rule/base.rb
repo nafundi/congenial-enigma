@@ -44,8 +44,10 @@ class Rule::Base
   # passed invalid data, a TestResult may also be given an error message for
   # display.
   class TestResult
-    def result
-      @result
+    attr_reader :result
+
+    def initialize
+      @error = nil
     end
 
     def success?
@@ -62,6 +64,7 @@ class Rule::Base
 
     def with_result(result)
       @result = !!result
+      @error.freeze
       freeze
     end
 

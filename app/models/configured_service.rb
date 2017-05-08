@@ -21,7 +21,7 @@
 # Depending on the context, the term "service" may refer either to the service
 # itself -- also known as the "service technology" -- or to the configured
 # service. Each ConfiguredService record is a configured service, not a service
-# technology. However, ConfiguredService uses single-table inheritance, and
+# technology. However, ConfiguredService uses single table inheritance, and
 # there is a different ConfiguredService subclass for each service technology.
 # Subclasses also define class methods that return information about the service
 # technology.

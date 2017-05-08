@@ -1,4 +1,4 @@
-# This module supplements single-table inheritance by including additional
+# This module supplements single table inheritance by including additional
 # functionality for the type attribute. Key additions include:
 #
 #   1. The type attribute must have a value, which is validated against a

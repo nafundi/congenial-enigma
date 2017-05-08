@@ -24,11 +24,11 @@ class Alert < ApplicationRecord
     ActiveRecord::Base.transaction do
       alert = Alert.new(attributes, &block)
       if alert.save
-        data_source_alert = DataSourceAlert.create(
+        data_source_alert = DataSourceAlert.new(
           data_source_id: source_id,
           alert_id: alert.id
         )
-        raise ActiveRecord::Rollback unless data_source_alert.persisted?
+        raise ActiveRecord::Rollback unless data_source_alert.save
       end
     end
     alert
@@ -53,7 +53,7 @@ class Alert < ApplicationRecord
     data_sources.distinct.pluck(:type).each do |source_type|
       supported_rules = source_type.constantize.supported_rules
       if supported_rules.none? { |rule_class| rule_class.name == rule_type }
-        errors.add :rule_type, "is not supported by one or more of the alert's data sources"
+        errors.add :rule_type, "is not supported by one or more of the alert’s data sources"
         return
       end
     end
