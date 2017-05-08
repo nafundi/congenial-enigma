@@ -32,8 +32,14 @@ class DataProcessor::Odk < DataProcessor::Base
     data_source.alerts.each do |alert|
       test = alert.rule.test(submission)
       if test.success? || test.error?
-        message = message(request: request, alert: alert, test: test)
-        messenger.deliver message
+        # TODO: Update this logic once we start automatically refreshing tokens.
+        destination_service = alert.data_destination.configured_service
+        if destination_service.safely_connected?
+          message = message(request: request, alert: alert, test: test)
+          alert.data_destination.messenger.deliver message
+        else
+          Rails.logger.debug "The message was not delivered, because configured service #{destination_service.id} must be connected or reconnected to Gmail."
+        end
       elsif Rails.env.development?
         Rails.logger.debug do
           "No message was sent for the alert with this message:\n\n#{alert.message}"

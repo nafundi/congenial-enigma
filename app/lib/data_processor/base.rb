@@ -11,11 +11,10 @@
 # #process.
 #
 class DataProcessor::Base
-  attr_reader :data_source, :messenger
+  attr_reader :data_source
 
-  def initialize(data_source:, messenger:)
+  def initialize(data_source)
     @data_source = data_source
-    @messenger = messenger
   end
 
   # #process processes incoming data after receiving an ActionDispatch::Request
