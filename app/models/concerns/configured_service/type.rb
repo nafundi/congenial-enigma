@@ -8,6 +8,7 @@
 #   2. Add the demodulized class name (for example, 'Odk') to TYPE_CLASS_NAMES.
 #   3. Provide a human-friendly name for the service technology using
 #      ::with_technology_name.
+#      TODO: Update this comment.
 #   4. Mark the service as a data source provider and/or a data destination
 #      provider: see ConfiguredServices::Type::Provider.
 #   5. See ModelAttributes::Settings for ways to store configured service
@@ -18,8 +19,8 @@ module ConfiguredService::Type
 
   include ModelAttributes::Type
   include ModelAttributes::Settings
-  include ConfiguredService::Type::TechnologyName
   include ConfiguredService::Type::Provider
+  include ConfiguredService::Type::Terminology
   include ConfiguredService::Type::Oauthable
 
   # Whitelist of demodulized names of configured service classes

@@ -1,9 +1,9 @@
 class ConfiguredServices::Odk < ConfiguredService
-  with_technology_name 'ODK Aggregate'
   provides :data_source
+  with_terminology service: 'ODK Aggregate', configured_service: 'server',
+                   data_source: 'form'
 
   with_settings :url
-
   validate :validate_url
 
   protected
