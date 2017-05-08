@@ -33,7 +33,7 @@ class DataProcessor::Odk < DataProcessor::Base
       test = alert.rule.test(submission)
       if test.success? || test.error?
         message = message(request: request, alert: alert, test: test)
-        messenger.message message
+        messenger.deliver message
       elsif Rails.env.development?
         Rails.logger.debug do
           "No message was sent for the alert with this message:\n\n#{alert.message}"
