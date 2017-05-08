@@ -1,18 +1,26 @@
-<div id="new-integration">
-  <table class="table table-condensed">
+<table class="table table-condensed" id="new-integration">
+  <tbody>
     <tr>
-      <td><h4>1</h4></t4>
+      <td><h4>1</h4></td>
       <td>
         <h4>Choose a Data Source</h4>
-        <%= render 'data_source_form' %>
+        <%= render 'choices_data_source' %>
       <td>
     </tr>
     <tr>
-      <td><h4>2</h4></td>
+      <td><h4 class="text-muted">2</h4></td>
       <td>
-        <h4>Add an Alert</h4>
-        <%= render 'alert_form' %>
+        <h4 class="text-muted">Add an Alert</h4>
+        <%= render 'choices_alert' %>
       </td>
     </tr>
-  </table>
-</div>
+    <tr>
+      <td><h4 class="text-muted">3</h4></td>
+      <td>
+        <h4 class="text-muted">Choose a Data Destination</h4>
+        <%= render 'choices_data_destination' %>
+        <%= render 'finalize_integration' %>
+      </td>
+    </tr>
+  </tbody>
+</table>

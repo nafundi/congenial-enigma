@@ -1,0 +1,65 @@
+<div class="choices" id="choices-alert">
+  <div class="panel panel-default choice" id="choice-pattern">
+    <div class="panel-heading">
+      <h5 class="panel-title"><span>Choose a Pattern</span></h5>
+    </div>
+    <div class="panel-body">
+      <form class="form-inline form-paragraph">
+        <div class="row">
+          <div class="form-group col-md-12">
+            Send an alert about the field
+            <%= text_field_tag 'field_name', @alert.rule_data['field_name'],
+                               placeholder: 'Field name', required: true,
+                               class: 'form-control form-inline-input-7' %>
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            If a data point&hellip;
+            <%# TODO: Have these options support data sources other than ODK. %>
+            <% options = options_from_collection_for_select(DataSources::Odk.supported_rules,
+                                                            :name, :title,
+                                                            @alert.rule_type) %>
+            <%= select_tag 'rule_class', options, class: 'form-control' %>
+            <%= number_field_tag 'rule_value', @alert.rule_data['value'],
+                                 placeholder: 'Number', required: true,
+                                 step: :any, class: 'form-control' %>
+          </div>
+        </div>
+        <%= button_tag 'Use This Pattern',
+                       class: 'btn btn-primary action action-complete' %>
+        <div class="action action-revisit" style="display:none">
+          <%= link_to icon('pencil'), '#', role: :button %>
+          <%= link_to 'Change', '#', role: :button %>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="panel panel-default choice" id="choice-message">
+    <div class="panel-heading">
+      <h5 class="panel-title"><span>Add a Message</span></h5>
+    </div>
+    <div class="panel-body">
+      <form class="form-inline form-paragraph">
+        <div class="row">
+          <div class="form-paragraph-text col-md-12">
+            Choose a message to send with the alert.
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-md-12">
+            <%= text_area_tag 'alert_message', @alert.message,
+                              placeholder: 'Message', required: true,
+                              class: 'form-control form-inline-input-12' %>
+          </div>
+        </div>
+        <%= button_tag 'Use This Message',
+                       class: 'btn btn-primary action action-complete' %>
+        <div class="action action-revisit">
+          <%= link_to icon('pencil'), '#', role: :button %>
+          <%= link_to 'Change', '#', role: :button %>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

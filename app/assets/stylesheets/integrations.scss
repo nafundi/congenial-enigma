@@ -3,35 +3,55 @@
     width: 33px;
   }
 
-  .service {
-    margin: 0 9px 9px 0;
-  }
-
-  #service-odk {
-    width: 120px;
-  }
-
-  #service-dhis2 {
-    width: 96px;
-  }
-
-  #choices-odk {
+  h4 i {
     display: none;
+  }
 
-    .action a i {
-      color: #337ab7;
-    }
+  .choices, .choice:not(:first-of-type), #finalize-integration {
+    display: none;
+  }
 
-    .action-choose, .action-modify {
+  tr:first-child h4 + .choices {
+    display: inline;
+  }
+
+  .action a i {
+    color: #337ab7;
+  }
+
+  .action-revisit {
+    display: none;
+  }
+
+  form:not(.form-paragraph) {
+    .action-complete {
       display: none;
     }
 
-    #choice-form {
-      display: none;
+    .radio + .action-add + .action-complete {
+      display: inline;
     }
   }
 
-  #alert-form {
-    display: none;
+  #choices-data-source {
+    #choice-data-source-service {
+      img {
+        margin: 0 9px 6px 0;
+      }
+
+      #service-odk img {
+        width: 120px;
+      }
+
+      #service-dhis2 img {
+        width: 96px;
+      }
+    }
+  }
+
+  #choices-alert {
+    #choice-pattern {
+      margin-top: 20px;
+    }
   }
 }

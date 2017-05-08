@@ -7,8 +7,10 @@ class IntegrationsController < ApplicationController
   end
 
   def new
-    @services = ConfiguredServices::Odk.order_by_name
+    @source_services = ConfiguredServices::Odk.order_by_name
     @sources = DataSources::Odk.order_by_name
+    @destination_services = ConfiguredServices::Gmail.order_by_name
+    @destinations = DataDestinations::Gmail.order_by_name
     @alert = Alert.new
     add_breadcrumb 'Add Integration'
   end
