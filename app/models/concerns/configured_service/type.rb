@@ -20,6 +20,7 @@ module ConfiguredService::Type
   include ModelAttributes::Settings
   include ConfiguredService::Type::TechnologyName
   include ConfiguredService::Type::Provider
+  include ConfiguredService::Type::Oauthable
 
   # Whitelist of demodulized names of configured service classes
   TYPE_CLASS_NAMES = %w[Gmail Odk].freeze

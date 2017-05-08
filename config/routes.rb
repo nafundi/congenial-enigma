@@ -13,4 +13,8 @@ Rails.application.routes.draw do
     end
   end
   resources :integrations, only: [:index, :new, :create, :destroy]
+
+  namespace :oauth do
+    get :google
+  end
 end

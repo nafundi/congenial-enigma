@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170505013804) do
+ActiveRecord::Schema.define(version: 20170506182509) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -58,6 +58,15 @@ ActiveRecord::Schema.define(version: 20170505013804) do
     t.text     "type",                               null: false
     t.jsonb    "settings",              default: {}, null: false
     t.integer  "configured_service_id",              null: false
+  end
+
+  create_table "oauth_tokens", force: :cascade do |t|
+    t.integer  "configured_service_id", null: false
+    t.text     "access_token",          null: false
+    t.datetime "expires_at",            null: false
+    t.datetime "created_at",            null: false
+    t.datetime "updated_at",            null: false
+    t.index ["configured_service_id"], name: "index_oauth_tokens_on_configured_service_id", unique: true, using: :btree
   end
 
 end
