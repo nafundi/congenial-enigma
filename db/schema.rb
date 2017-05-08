@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170504212000) do
+ActiveRecord::Schema.define(version: 20170505013804) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "alerts", force: :cascade do |t|
-    t.text     "rule_type",               null: false
-    t.jsonb    "rule_data",  default: {}, null: false
-    t.text     "email",                   null: false
-    t.text     "message",                 null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.text     "rule_type",                        null: false
+    t.jsonb    "rule_data",           default: {}, null: false
+    t.text     "message",                          null: false
+    t.datetime "created_at",                       null: false
+    t.datetime "updated_at",                       null: false
+    t.integer  "data_destination_id",              null: false
   end
 
   create_table "configured_services", force: :cascade do |t|

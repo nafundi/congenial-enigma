@@ -2,10 +2,12 @@ class Alert < ApplicationRecord
   has_many :data_source_alerts, dependent: :destroy
   has_many :data_sources, through: :data_source_alerts
 
+  belongs_to :data_destination
+  validates :data_destination, presence: true
+
   validate :rule_must_be_supported
   validate :rule_must_instantiate
 
-  validates :email, presence: true
   validates :message, presence: true
 
   # #create_for_data_source is similar to #create, but it also creates a

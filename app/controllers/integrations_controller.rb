@@ -32,8 +32,8 @@ class IntegrationsController < ApplicationController
     if supported_rules.none? { |rule_class| rule_class.name == params[:rule_type] }
       raise ArgumentError
     end
-    integration_params = params.permit(:data_source_id, :rule_type, :email,
-                                       :message)
+    integration_params = params.permit(:data_source_id, :data_destination_id,
+                                       :rule_type, :message)
     integration_params[:rule_data] = params.require(:rule_data).permit!
     integration_params
   end
