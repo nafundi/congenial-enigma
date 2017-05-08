@@ -22,7 +22,7 @@ module ConfiguredService::Type
   include ConfiguredService::Type::Provider
 
   # Whitelist of demodulized names of configured service classes
-  TYPE_CLASS_NAMES = %w[Odk].freeze
+  TYPE_CLASS_NAMES = %w[Gmail Odk].freeze
 
   class_methods do
     def type_class_names

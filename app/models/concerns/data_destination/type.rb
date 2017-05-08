@@ -16,7 +16,7 @@ module DataDestination::Type
   include ModelAttributes::Settings
 
   # Whitelist of demodulized names of data destination classes
-  TYPE_CLASS_NAMES = %w[].freeze
+  TYPE_CLASS_NAMES = %w[Gmail].freeze
 
   class_methods do
     def type_class_names
