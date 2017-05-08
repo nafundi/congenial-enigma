@@ -1,6 +1,7 @@
 (function() {
   // Adding a trailing space for ease of combining with other selectors.
   var topSelector = '#new-integration ';
+  var Draft = draftFactory();
   var Finalization = finalizationFactory('finalize-integration');
   var RecipientListChoice = filteredChoiceFactory({
     id: 'choice-recipient-list',
@@ -61,7 +62,8 @@
   var CongenialEnigma = listenerFactory([
     DataSourceChoices,
     AlertChoices,
-    DataDestinationChoices
+    DataDestinationChoices,
+    Draft
   ]);
   CongenialEnigma.listen();
   return;
@@ -189,13 +191,27 @@
       }
     ];
     return {
+      nextElement: options.nextElement,
+      hasDraft: function() {
+        return ServerChoice.hasDraft();
+      },
+      restoreDraft: function() {
+        var draft = this.hasDraft();
+        if (draft)
+          this.complete();
+        return draft;
+      },
+      complete: function() {
+        services[1].deselect();
+        services[0].select();
+        options.nextElement.show();
+      },
       listen: function() {
+        var self = this;
         $(document)
           .on('click', selectors[0], function(e) {
             e.preventDefault();
-            services[1].deselect();
-            services[0].select();
-            options.nextElement.show();
+            self.complete();
           })
           .on('click', selectors[1], function(e) {
             e.preventDefault();
@@ -210,6 +226,17 @@
   function choiceListFactory(options) {
     var id = '#' + options.id;
     return {
+      nextElement: options.nextElement,
+      hasDraft: function() {
+        return options.choices[0].hasDraft();
+      },
+      restoreDraft: function() {
+        for (var i = 0; i < options.choices.length; i++) {
+          if (!options.choices[i].restoreDraft())
+            return false;
+        }
+        return true;
+      },
       show: function() {
         var $choices = $(id);
         $choices.show();
@@ -233,7 +260,10 @@
   function choiceFactory(options) {
     var $panel, state;
     var choice = {
+      nextElement: options.nextElement,
       state: state,
+      hasDraft: hasDraft,
+      restoreDraft: restoreDraft,
       complete: complete,
       revisit: revisit,
       listen: listen
@@ -248,6 +278,17 @@
 
     function state() {
       return state;
+    }
+
+    function hasDraft() {
+      return $panel.data('hasDraft');
+    }
+
+    function restoreDraft() {
+      var draft = hasDraft();
+      if (draft)
+        complete(true);
+      return draft;
     }
 
     function activate() {
@@ -274,9 +315,23 @@
       state = 'hidden';
     }
 
-    function complete() {
+    function saveDraft() {
+      var data = {};
+      var selector = 'input[type="radio"]:checked, input[type!="radio"], ' +
+        'select, textarea';
+      $panel.find(selector).each(function() {
+        var $el = $(this);
+        var name = $el.data('draftName') || $el.attr('name');
+        data[name] = $el.val();
+      });
+      $.post('/integrations/save_draft', data);
+    }
+
+    function complete(skipDraftSave) {
       if (state !== 'active')
         return;
+      if (!skipDraftSave)
+        saveDraft();
       completePanel($panel);
       state = 'complete';
       options.nextElement.show();
@@ -378,6 +433,21 @@
 
     function hide() {
       $(selector).hide();
+    }
+  }
+
+  function draftFactory() {
+    return {
+      listen: function() {
+        $(document).on('turbolinks:load', restoreDraft);
+      }
+    };
+
+    function restoreDraft() {
+      for(var el = DataSourceServiceChoice;
+          el && el.restoreDraft && el.restoreDraft();
+          el = el.nextElement)
+        ;
     }
   }
 })();

@@ -23,6 +23,7 @@ class DataDestinationsController < ApplicationController
   def create
     @destination = DataDestination.new(destination_params)
     if @destination.save
+      @destination.save_draft
       redirect_to new_integration_path
     else
       render_new

@@ -15,6 +15,7 @@ class OauthController < ApplicationController
     else
       service.create_oauth_token attributes
     end
+    service.save_draft
     redirect_to new_integration_path
   end
 end

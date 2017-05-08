@@ -1,6 +1,10 @@
 <div class="choices" id="choices-data-destination">
   <p>Choose how the alert will be delivered.</p>
-  <div class="panel panel-default choice" id="choice-gmail-account">
+
+  <% has_draft = @draft.data_destination_configured_service_id.present? %>
+  <%= content_tag :div, class: 'panel panel-default choice',
+                  id: 'choice-gmail-account',
+                  data: { has_draft: has_draft } do %>
     <div class="panel-heading">
       <h5 class="panel-title"><span>Choose an Account</span></h5>
     </div>
@@ -43,8 +47,11 @@
         </div>
       </form>
     </div>
-  </div>
-  <div class="panel panel-default choice" id="choice-recipient-list">
+  <% end %>
+
+  <%= content_tag :div, class: 'panel panel-default choice',
+                  id: 'choice-recipient-list',
+                  data: { has_draft: @draft.data_destination_id.present? } do %>
     <div class="panel-heading">
       <h5 class="panel-title"><span>Choose a Recipient List</span></h5>
     </div>
@@ -76,5 +83,5 @@
         </div>
       </form>
     </div>
-  </div>
+  <% end %>
 </div>

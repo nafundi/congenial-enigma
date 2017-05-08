@@ -30,10 +30,18 @@ class Alert < ApplicationRecord
           data_source_id: source_id,
           alert_id: alert.id
         )
-        raise ActiveRecord::Rollback unless data_source_alert.save
+        if data_source_alert.save
+          AlertDraft.first&.destroy
+        else
+          raise ActiveRecord::Rollback
+        end
       end
     end
     alert
+  end
+
+  def self.draft
+    AlertDraft.first || AlertDraft.new
   end
 
   # Returns the cached rule.

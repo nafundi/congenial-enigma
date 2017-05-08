@@ -11,8 +11,11 @@
       <% end %>
     </p>
   </div>
+
   <div class="choices" id="choices-odk">
-    <div class="panel panel-default choice" id="choice-server">
+    <% has_draft = @draft.data_source_configured_service_id.present? %>
+    <%= content_tag :div, class: 'panel panel-default choice',
+                    id: 'choice-server', data: { has_draft: has_draft } do %>
       <div class="panel-heading">
         <h5 class="panel-title"><span>Choose a Server</span></h5>
       </div>
@@ -21,8 +24,13 @@
           <% @source_services.each.with_index do |service, i| %>
             <div class="radio">
               <label>
+                <% if @draft.data_source_configured_service_id.present? %>
+                  <% checked = service.id == @draft.data_source_configured_service_id %>
+                <% else %>
+                  <% checked = i == 0 %>
+                <% end %>
                 <%= radio_button_tag 'data_source_configured_service_id',
-                                     service.id, i == 0, required: true %>
+                                     service.id, checked, required: true %>
                 <strong><%= service.name %></strong> <%= service.url %>
               </label>
             </div>
@@ -40,8 +48,11 @@
           </div>
         </div>
       </form>
-    </div>
-    <div class="panel panel-default choice" id="choice-form">
+    <% end %>
+
+    <%= content_tag :div, class: 'panel panel-default choice',
+                    id: 'choice-form',
+                    data: { has_draft: @draft.data_source_id.present? } do %>
       <div class="panel-heading">
         <h5 class="panel-title"><span>Choose a Form</span></h5>
       </div>
@@ -51,7 +62,12 @@
             <%= content_tag :div, class: 'radio', data: {
                             configured_service_id: source.configured_service_id } do %>
               <label>
-                <%= radio_button_tag 'data_source_id', source.id, i == 0,
+                <% if @draft.data_source_id.present? %>
+                  <% checked = source.id == @draft.data_source_id %>
+                <% else %>
+                  <% checked = i == 0 %>
+                <% end %>
+                <%= radio_button_tag 'data_source_id', source.id, checked,
                                      required: true %>
                 <strong><%= source.name %></strong> <%= source.form_id %>
               </label>
@@ -71,6 +87,6 @@
           </div>
         </form>
       </div>
-    </div>
+    <% end %>
   </div>
 </div>

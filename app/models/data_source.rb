@@ -1,7 +1,10 @@
 class DataSource < ApplicationRecord
+  include Draftable
   include ModelAttributes::Name
   include ServiceProvided
   include DataSource::Type
+
+  with_draft_attribute :data_source_id
 
   has_many :data_source_alerts
   has_many :alerts, through: :data_source_alerts

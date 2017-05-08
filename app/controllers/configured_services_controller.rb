@@ -24,6 +24,7 @@ class ConfiguredServicesController < ApplicationController
         # We still need the user to authenticate the configured service.
         redirect_to edit_configured_service_path(@service)
       else
+        @service.save_draft
         redirect_to new_integration_path
       end
     else

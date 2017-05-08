@@ -24,6 +24,7 @@ class DataSourcesController < ApplicationController
   def create
     @source = DataSource.new(source_params)
     if @source.save
+      @source.save_draft
       redirect_to new_integration_path
     else
       render_new

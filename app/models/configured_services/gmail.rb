@@ -3,10 +3,13 @@ require 'google/api_client/client_secrets'
 require 'google/apis/gmail_v1'
 
 class ConfiguredServices::Gmail < ConfiguredService
+  include Draftable
+
   provides :data_destination
   with_terminology service: 'Gmail', configured_service: 'account',
                    data_destination: 'recipient list'
   oauthable
+  with_draft_attribute :data_destination_configured_service_id
 
   TOKEN_STATUSES = %i[never_connected safely_connected almost_disconnected
                       disconnected].freeze
