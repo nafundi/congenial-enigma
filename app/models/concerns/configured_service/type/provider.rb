@@ -36,7 +36,6 @@ module ConfiguredService::Type::Provider
     class_attribute :_provider
     self._provider = HashWithIndifferentAccess.new({
       data_source: false,
-      # TODO: Implement this functionality.
       data_destination: false
     })
 
@@ -49,6 +48,7 @@ module ConfiguredService::Type::Provider
     # below to raise an error if they are called by an object whose service does
     # not provide them.
     has_many :data_sources, dependent: :destroy
+    has_many :data_destinations, dependent: :destroy
   end
 
   class_methods do
@@ -81,6 +81,15 @@ module ConfiguredService::Type::Provider
       name.constantize
     end
 
+    # Each service that is a data destination provider is associated with its
+    # own data destination class. #data_destination_class returns that class.
+    def data_destination_class
+      provides! :data_destination
+      name = 'DataDestinations::' + self.name.demodulize
+      raise ArgumentError unless DataDestination.type_class_names.include? name
+      name.constantize
+    end
+
     protected
 
     def clone_superclass_providers
@@ -95,6 +104,11 @@ module ConfiguredService::Type::Provider
 
   def data_sources
     self.class.provides! :data_source
+    super
+  end
+
+  def data_destinations
+    self.class.provides! :data_destination
     super
   end
 end
