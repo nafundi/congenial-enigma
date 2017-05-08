@@ -1,5 +1,6 @@
 <div class="collection-actions">
-  <%= link_to icon('plus', 'Add Form'),
+  <% term = @service.class.terminology.data_source.titleize %>
+  <%= link_to icon('plus', 'Add ' + term),
               new_configured_service_data_source_path(@service), role: :button,
               class: 'btn btn-success' %>
 </div>
@@ -7,8 +8,8 @@
 <% if @sources.none? %>
   <div class="panel panel-default">
     <div class="panel-body">
-      No forms have been configured yet for
-      <strong><%= @service.name %></strong>.
+      No <%= @service.class.terminology.data_source.pluralize %> have been
+      configured yet for <strong><%= @service.name %></strong>.
     </div>
   </div>
 <% else %>

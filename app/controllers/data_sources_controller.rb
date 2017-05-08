@@ -1,12 +1,19 @@
 class DataSourcesController < ApplicationController
+  include ConfiguredServicePathHelpers
+
   before_action :set_service
   before_action :set_source, only: [:edit, :update, :destroy, :push]
   skip_before_action :verify_authenticity_token, only: :push
 
   before_action do
-    add_breadcrumb 'My Servers', configured_services_path
+    add_configured_service_breadcrumb
     add_breadcrumb @service.name, edit_configured_service_path(@service)
-    add_breadcrumb 'Forms', configured_service_data_sources_path(@service)
+    add_breadcrumb @service.class.terminology.data_source.pluralize.titleize,
+                   configured_service_data_sources_path(@service)
+  end
+
+  def index
+    @sources = @service.data_sources.order_by_name.load
   end
 
   def new
@@ -21,10 +28,6 @@ class DataSourcesController < ApplicationController
     else
       render_new
     end
-  end
-
-  def index
-    @sources = @service.data_sources.order_by_name.load
   end
 
   def edit
@@ -68,7 +71,7 @@ class DataSourcesController < ApplicationController
   end
 
   def render_new
-    add_breadcrumb 'Add Form'
+    add_breadcrumb 'Add ' + @service.class.terminology.data_source.titleize
     render 'new'
   end
 

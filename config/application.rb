@@ -12,6 +12,8 @@ module CongenialEnigma
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.
 
+    config.action_controller.include_all_helpers = false
+
     config.generators do |g|
       g.test_framework :rspec
     end
