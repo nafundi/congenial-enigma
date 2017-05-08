@@ -24,6 +24,9 @@
               <% if service.class.provides? :data_source %>
                 <%= link_to icon('files-o'),
                             configured_service_data_sources_path(service) %>
+              <% elsif service.class.provides? :data_destination %>
+                <%= link_to icon('files-o'),
+                            configured_service_data_destinations_path(service) %>
               <% end %>
               <%= link_to icon('trash-o', class: 'text-danger'),
                           configured_service_path(service), method: :delete,

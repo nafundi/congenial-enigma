@@ -1,0 +1,15 @@
+<%= render 'form_errors' %>
+
+<%= form_tag configured_service_data_destinations_path(@service), method: :post,
+             class: 'form-horizontal' do %>
+  <%= render 'form_fields' %>
+
+  <div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+      <% term = @service.class.terminology.data_destination.titleize %>
+      <%= button_tag icon('plus', 'Add ' + term), class: 'btn btn-success' %>
+      <%= link_to icon('close', 'Cancel'), :back, role: :button,
+                  class: 'btn btn-default' %>
+    </div>
+  </div>
+<% end %>

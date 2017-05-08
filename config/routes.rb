@@ -11,6 +11,7 @@ Rails.application.routes.draw do
         post 'push'
       end
     end
+    resources :data_destinations, except: :show
   end
   resources :integrations, only: [:index, :new, :create, :destroy]
 

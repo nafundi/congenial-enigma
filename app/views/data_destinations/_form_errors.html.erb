@@ -1,0 +1,28 @@
+<% if @destination.errors.any? %>
+  <div class="panel panel-danger">
+    <div class="panel-heading">
+      Invalid <%= @service.class.terminology.data_destination.titleize %>
+    </div>
+    <div class="panel-body">
+      <p>
+        There
+        <% if @destination.errors.size == 1 %>
+          was a problem
+        <% else %>
+          were problems
+        <% end %>
+        saving the <%= @service.class.terminology.data_destination %>:
+      </p>
+      <ul>
+        <% @destination.errors.each do |attribute, error| %>
+          <li>
+            <% unless attribute == :settings %>
+              <%= DataDestination.human_attribute_name(attribute) %>
+            <% end %>
+            <%= error %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>

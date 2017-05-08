@@ -1,0 +1,35 @@
+<div class="collection-actions">
+  <% term = @service.class.terminology.data_destination.titleize %>
+  <%= link_to icon('plus', 'Add ' + term),
+              new_configured_service_data_destination_path(@service),
+              role: :button, class: 'btn btn-success' %>
+</div>
+
+<% if @destinations.none? %>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      No <%= @service.class.terminology.data_destination.pluralize %> have been
+      configured yet for <strong><%= @service.name %></strong>.
+    </div>
+  </div>
+<% else %>
+  <table class="table table-hover table-borderless">
+    <tbody>
+      <% @destinations.each do |destination| %>
+        <tr>
+          <td>
+            <span class="member-actions">
+              <%= link_to icon('pencil'),
+                          edit_configured_service_data_destination_path(@service, destination) %>
+              <%= link_to icon('trash-o', class: 'text-danger'),
+                          configured_service_data_destination_path(@service, destination),
+                          method: :delete,
+                          data: { confirm: "Are you sure you want to delete #{destination.name}?" } %>
+            </span>
+            <%= destination.name %>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
