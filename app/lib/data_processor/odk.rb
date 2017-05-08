@@ -20,6 +20,8 @@ class DataProcessor::Odk < DataProcessor::Base
     valid = request.params['formId'] == data_source.form_id
     unless valid
       Rails.logger.debug do
+        # TODO: Email the user about this case? It probably indicates a
+        # configuration error.
         "The form ID of the request, '#{request.params['formId']}', does not match the form ID of the data source, '#{data_source.form_id}'."
       end
     end
@@ -30,9 +32,8 @@ class DataProcessor::Odk < DataProcessor::Base
     data_source.alerts.each do |alert|
       test = alert.rule.test(submission)
       if test.success? || test.error?
-        message = message(request: request, alert: alert, test: test,
-                          form: data_source)
-        messenger.message message.text
+        message = message(request: request, alert: alert, test: test)
+        messenger.message message
       elsif Rails.env.development?
         Rails.logger.debug do
           "No message was sent for the alert with this message:\n\n#{alert.message}"

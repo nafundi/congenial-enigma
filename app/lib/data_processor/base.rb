@@ -27,66 +27,12 @@ class DataProcessor::Base
   protected
 
   def message(**args)
-    Message.new(
+    DataProcessorMailer.public_send(self.class.name.demodulize.underscore,
       request: args.delete(:request),
       processor: self,
       alert: args.delete(:alert),
       test: args.delete(:test),
       locals: args
     )
-  end
-
-  # The Message class encapsulates a message that an alert triggers as a data
-  # processor processes incoming data. Message text is evaluated as ERB, and
-  # arbitrary local variables may be passed to the message for convenient access
-  # from the ERB.
-  class Message
-    include Rails.application.routes.url_helpers
-
-    attr_reader :request, :processor, :alert, :test, :locals
-
-    delegate :data_source, to: :processor
-
-    def initialize(request:, processor:, alert:, test:, locals: nil)
-      raise ArgumentError unless request && processor && alert && test
-      @request = request
-      @processor = processor
-      @alert = alert
-      @test = test
-      @locals = locals ? HashWithIndifferentAccess.new(locals) : nil
-    end
-
-    def text
-      ERB.new(template).result(binding)
-    end
-
-    protected
-
-    # Returns the ERB template.
-    def template
-      basename = processor.class.name.demodulize.underscore + '.text.erb'
-      path = Rails.root.join('app', 'views', 'data_processors', basename).to_path
-      File.read(path)
-    end
-
-    def default_url_options
-      {
-        protocol: request.protocol,
-        host: request.host,
-        port: request.port
-      }
-    end
-
-    # The ERB may access local variables through the locals Hash or as a method.
-    # For example, for locals = { x: 1 }, the ERB may include <%= locals[:x] %>
-    # or simply <%= x %>.
-    def method_missing(symbol, *args)
-      if locals&.key?(symbol)
-        raise ArgumentError if args.any? || block_given?
-        locals[symbol]
-      else
-        super
-      end
-    end
   end
 end

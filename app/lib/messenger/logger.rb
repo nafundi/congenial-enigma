@@ -1,5 +1,5 @@
 class Messenger::Logger < Messenger::Base
-  def message(text)
-    Rails.logger.info text
+  def message(message)
+    Rails.logger.info message.body
   end
 end
