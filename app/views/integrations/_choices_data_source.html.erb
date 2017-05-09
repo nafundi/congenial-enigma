@@ -5,7 +5,7 @@
       <% if @draft.data_source_configured_service_id.blank? ||
             service == :odk %>
         <%= content_tag :div, class: 'service col-md-3',
-            id: "service-#{service}" do %>
+                        id: "service-#{service}" do %>
           <p>
             <%= link_to image_tag("services/#{service}"), '#', role: :button %>
           </p>

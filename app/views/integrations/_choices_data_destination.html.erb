@@ -1,6 +1,21 @@
 <div class="choices" id="choices-data-destination">
   <p>Choose how the alert will be delivered.</p>
 
+  <div class="choice row" id="choice-data-destination-service">
+    <% %i[gmail sms google_sheets].each.with_index do |service, i| %>
+      <% if @draft.data_destination_configured_service_id.blank? ||
+          service == :gmail %>
+        <%= content_tag :div, class: 'service col-md-3',
+                        id: "service-#{service}" do %>
+          <p>
+            <%= link_to image_tag("services/#{service}"), '#', role: :button %>
+          </p>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="choices" id="choices-gmail">
   <% has_draft = @draft.data_destination_configured_service_id.present? %>
   <%= content_tag :div, class: 'panel panel-default choice',
                   id: 'choice-gmail-account',
@@ -84,4 +99,5 @@
       </form>
     </div>
   <% end %>
+  </div>
 </div>

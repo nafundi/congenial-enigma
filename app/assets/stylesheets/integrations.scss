@@ -3,10 +3,6 @@
     width: 33px;
   }
 
-  h4 i {
-    display: none;
-  }
-
   .choices, .choice:not(:first-of-type), #finalize-integration {
     display: none;
   }
@@ -15,12 +11,13 @@
     display: inline;
   }
 
-  .action a i {
-    color: #337ab7;
+  .service img {
+    width: 123px;
+    height: 123px;
   }
 
-  .action-revisit {
-    display: none;
+  .action a i {
+    color: #337ab7;
   }
 
   form:not(.form-paragraph) {
@@ -33,13 +30,8 @@
     }
   }
 
-  #choices-data-source {
-    #choice-data-source-service {
-      img {
-        width: 123px;
-        height: 123px;
-      }
-    }
+  .action-revisit {
+    display: none;
   }
 
   #choices-alert {

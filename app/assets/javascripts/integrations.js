@@ -15,10 +15,18 @@
     type: 'radio',
     nextElement: RecipientListChoice
   });
+  var GmailChoices = choiceListFactory({
+    id: 'choices-gmail',
+    choices: [GmailAccountChoice, RecipientListChoice],
+  });
+  var DataDestinationServiceChoice = serviceChoiceFactory({
+    choiceId: 'choice-data-destination-service',
+    serviceId: 'service-gmail',
+    nextElement: GmailChoices
+  });
   var DataDestinationChoices = choiceListFactory({
     id: 'choices-data-destination',
-    choices: [GmailAccountChoice, RecipientListChoice],
-    nextElement: Finalization
+    choices: [DataDestinationServiceChoice, GmailChoices]
   });
   var MessageChoice = choiceFactory({
     id: 'choice-message',
@@ -31,8 +39,7 @@
   });
   var AlertChoices = choiceListFactory({
     id: 'choices-alert',
-    choices: [PatternChoice, MessageChoice],
-    nextElement: DataDestinationChoices
+    choices: [PatternChoice, MessageChoice]
   });
   var FormChoice = filteredChoiceFactory({
     id: 'choice-form',
@@ -48,8 +55,7 @@
   });
   var ODKChoices = choiceListFactory({
     id: 'choices-odk',
-    choices: [ServerChoice, FormChoice],
-    nextElement: AlertChoices
+    choices: [ServerChoice, FormChoice]
   });
   var DataSourceServiceChoice = serviceChoiceFactory({
     choiceId: 'choice-data-source-service',
@@ -163,11 +169,14 @@
     };
   }
 
+  // nextElement must be a choice list.
   function serviceChoiceFactory(options) {
     return {
-      nextElement: options.nextElement,
+      nextElement: function() {
+        return options.nextElement;
+      },
       hasDraft: function() {
-        return ServerChoice.hasDraft();
+        return options.nextElement.choices[0].hasDraft();
       },
       restoreDraft: function() {
         var draft = this.hasDraft();
@@ -202,10 +211,28 @@
     };
   }
 
+  /*
+  choiceListFactory() returns a "choice list," which groups together one or more
+  other choices and/or choice lists. Think of a choice list as a tree, where
+  choice lists are branches and choices are leaves. Options:
+
+    id       HTML id of the choice list element
+    choices  Array of the choices and choice lists contained in the list
+             (immediate children only)
+  */
   function choiceListFactory(options) {
-    var id = '#' + options.id;
+    var lastChoice = options.choices[options.choices.length - 1];
+    var $choices, hidden;
     return {
-      nextElement: options.nextElement,
+      choices: options.choices,
+      nextElement: function() {
+        return lastChoice.nextElement();
+      },
+      state: function() {
+        if (hidden)
+          return 'hidden';
+        return lastChoice.state() === 'complete' ? 'complete' : 'active';
+      },
       hasDraft: function() {
         return options.choices[0].hasDraft();
       },
@@ -217,18 +244,24 @@
         return true;
       },
       show: function() {
-        var $choices = $(id);
         $choices.show();
-        if (options.choices[options.choices.length - 1].state() === 'complete')
-          options.nextElement.show();
+        hidden = false;
+        if (this.state() === 'complete')
+          this.nextElement().show();
         else
           activateStepTitle($choices);
+        hidden = false;
       },
       hide: function() {
-        options.nextElement.hide();
-        $(id).hide();
+        this.nextElement().hide();
+        $choices.hide();
+        hidden = true;
       },
       listen: function() {
+        $(document).on('turbolinks:load', function() {
+          $choices = $('#' + options.id);
+          hidden = true;
+        });
         options.choices.forEach(function(choice) {
           choice.listen();
         });
@@ -239,7 +272,7 @@
   function choiceFactory(options) {
     var $panel, state;
     var choice = {
-      nextElement: options.nextElement,
+      nextElement: nextElement,
       state: state,
       hasDraft: hasDraft,
       restoreDraft: restoreDraft,
@@ -254,6 +287,10 @@
       choice.hide = hide;
     }
     return choice;
+
+    function nextElement() {
+      return options.nextElement;
+    }
 
     function state() {
       return state;
@@ -289,7 +326,7 @@
     function hide() {
       if (state === 'hidden')
         return;
-      options.nextElement.hide();
+      nextElement().hide();
       $panel.hide();
       state = 'hidden';
     }
@@ -313,7 +350,7 @@
         saveDraft();
       completePanel($panel);
       state = 'complete';
-      options.nextElement.show();
+      nextElement().show();
     }
 
     function valRadio() {
@@ -323,7 +360,7 @@
     function revisit() {
       if (state !== 'complete')
         return;
-      options.nextElement.hide();
+      nextElement().hide();
       activate();
       state = 'active';
     }
@@ -425,7 +462,7 @@
     function restoreDraft() {
       for(var el = DataSourceServiceChoice;
           el && el.restoreDraft && el.restoreDraft();
-          el = el.nextElement)
+          el = el.nextElement())
         ;
     }
   }
