@@ -1,15 +1,17 @@
 <div class="choices" id="choices-data-source">
-  <div class="choice" id="choice-data-source-service">
-    <p>
-      <%= link_to '#', id: 'service-odk', class: 'service', role: :button do %>
-        <%= image_tag 'services/odk.png' %>
+  <div class="choice row" id="choice-data-source-service">
+    <% %i[odk      dhis2        ona     disarm
+          commcare medic_mobile opensrp rapidpro].each.with_index do |service, i| %>
+      <% if @draft.data_source_configured_service_id.blank? ||
+            service == :odk %>
+        <%= content_tag :div, class: 'service col-md-3',
+            id: "service-#{service}" do %>
+          <p>
+            <%= link_to image_tag("services/#{service}"), '#', role: :button %>
+          </p>
+        <% end %>
       <% end %>
-      <%= link_to '#', id: 'service-dhis2', class: 'service', role: :button,
-                  data: { toggle: :popover, trigger: :manual, placement: :right,
-                  content: "We’ve started work on our DHIS2 integration. Stay tuned!" } do %>
-        <%= image_tag 'services/dhis2.png' %>
-      <% end %>
-    </p>
+    <% end %>
   </div>
 
   <div class="choices" id="choices-odk">

@@ -52,7 +52,8 @@
     nextElement: AlertChoices
   });
   var DataSourceServiceChoice = serviceChoiceFactory({
-    serviceIds: ['service-odk', 'service-dhis2'],
+    choiceId: 'choice-data-source-service',
+    serviceId: 'service-odk',
     nextElement: ODKChoices
   });
   var DataSourceChoices = listenerFactory([
@@ -163,33 +164,6 @@
   }
 
   function serviceChoiceFactory(options) {
-    var selectors = options.serviceIds.map(function(id) {
-      return topSelector + '#' + id;
-    });
-    var services = [
-      {
-        select: function() {
-          $(selectors[0]).fadeTo('fast', 1);
-        },
-        deselect: function() {
-          $(selectors[0]).fadeTo('fast', 0.5);
-        }
-      },
-      {
-        select: function() {
-          var $service = $(selectors[1]);
-          activateStepTitle($service);
-          $service
-            .fadeTo('fast', 1)
-            .popover('show');
-        },
-        deselect: function() {
-          $(selectors[1])
-            .popover('hide')
-            .fadeTo('fast', 0.5);
-        }
-      }
-    ];
     return {
       nextElement: options.nextElement,
       hasDraft: function() {
@@ -198,26 +172,31 @@
       restoreDraft: function() {
         var draft = this.hasDraft();
         if (draft)
-          this.complete();
+          options.nextElement.show();
         return draft;
       },
-      complete: function() {
-        services[1].deselect();
-        services[0].select();
-        options.nextElement.show();
-      },
       listen: function() {
-        var self = this;
+        // Adding a trailing space for ease of combining with other selectors.
+        var choiceSelector = topSelector + '#' + options.choiceId + ' ';
+        var serviceSelector = topSelector + '#' + options.serviceId + ' ';
+        var otherServicesSelector = choiceSelector +
+          '.service:not(#' + options.serviceId + ') ';
         $(document)
-          .on('click', selectors[0], function(e) {
+          .on('click', serviceSelector, function(e) {
             e.preventDefault();
-            self.complete();
+            $(otherServicesSelector).fadeTo('slow', 0, function() {
+              $(this).remove();
+              options.nextElement.show();
+            });
+            $(serviceSelector).fadeTo('slow', 1);
           })
-          .on('click', selectors[1], function(e) {
+          .on('click', otherServicesSelector, function(e) {
             e.preventDefault();
             options.nextElement.hide();
-            services[0].deselect();
-            services[1].select();
+            activateStepTitle($(choiceSelector));
+            var id = '#' + $(this).attr('id');
+            $(choiceSelector + '.service:not(' + id + ')').fadeTo('fast', 0.5);
+            $(id).fadeTo('fast', 1);
           });
       }
     };
